@@ -26,8 +26,14 @@ cards.forEach((card, i) => {
 
 cards.forEach((card) => {
     card.style.order = Math.floor(Math.random() * 12);
-})
+    card.classList.add('flip')
 
+})
+setTimeout(() => {
+    cards.forEach((card) => {
+        card.classList.remove('flip')
+    })
+}, 2000)
 
 var img1 = '',
     img2 = '';
