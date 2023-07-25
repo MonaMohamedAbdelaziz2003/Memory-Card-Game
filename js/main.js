@@ -20,49 +20,56 @@ var imgs = [
 var randcol = Math.floor(Math.random() * 4);
 cards.forEach((card, i) => {
     card.children[0].src = imgs[randcol][i];
-    card.addEventListener('click', flipcard);
-
-})
-
+});
 cards.forEach((card) => {
     card.style.order = Math.floor(Math.random() * 12);
     card.classList.add('flip')
+});
 
-})
 setTimeout(() => {
     cards.forEach((card) => {
         card.classList.remove('flip')
     })
 }, 2000)
+cards.forEach((card) => {
+    card.addEventListener('click', flipcard);
+
+})
 
 var img1 = '',
     img2 = '';
+var click = true;
 var counter = 0;
 var done = document.getElementById('done');
 
 function flipcard() {
-    if (this.classList.contains('flip')) return;
-    if (img1 === '' || img2 === '') this.classList.add('flip');
+    if (this.classList.contains('flip') || !click) return;
+    this.classList.add('flip');
     if (img1 === '') img1 = this;
     else if (img2 === '') img2 = this;
-    if (img2 !== '' && img1 !== '') {
-        console.log(img1, img2)
-        if (img1.children[0].src === img2.children[0].src) {
-            ++counter;
-        } else {
-            setTimeout(() => {
-                img1.classList.remove('flip');
-                img2.classList.remove('flip');
-            }, 1000)
-        }
+    var img11 = img1 ? img1.children[0].src : '';
+    var img22 = img2 ? img2.children[0].src : '';
+    // 
+    if (img22 === img11) {
+        ++counter;
+        img1 = '', img2 = '';
+    }
+    // 
+    else if (img22 !== '' && img11 !== '') {
+        click = false;
         setTimeout(() => {
-            img1 = '', img2 = '';
+            img1.classList.remove('flip');
+            img2.classList.remove('flip');
+            img1 = '';
+            img2 = '';
+            click = true;
         }, 1000)
     }
-    if (counter === 6) {
+    if (counter == 6) {
         done.style.display = 'flex';
     }
 }
+
 
 function cancel() {
     done.style.display = 'none';
